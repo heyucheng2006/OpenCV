@@ -1,0 +1,18 @@
+import cv2
+import numpy as np
+
+a=np.random.randint(0,255,size=[5,5],dtype=np.uint8)
+b=np.zeros((5,5),dtype=np.uint8)
+b[0:3,0:3]=255
+b[4,4]=255
+c=cv2.bitwise_and(a,b)
+d=cv2.bitwise_or(a,b)
+e=cv2.bitwise_not(a)
+f=cv2.bitwise_xor(a,b)
+
+print("a:\n",a)
+print("b:\n",b)
+print("c:\n",c)
+print("d:\n",d)
+print("e:\n",e)
+print("f:\n",f)

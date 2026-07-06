@@ -1,0 +1,41 @@
+import cv2
+import numpy as np
+#读取原始载体图像
+a=cv2.imread("001.bmp",0)    
+#读取原始载体图像的shape值
+r,c=a.shape
+mask=np.zeros((r,c),dtype=np.uint8)
+mask[100:400,200:400]=1
+#获取一个key
+key=np.random.randint(0,256,size=[r,c],dtype=np.uint8)     #密钥图像，随机数生成
+#==========获取打码脸
+#使用密钥key对原始图像a加密
+aXorKey=cv2.bitwise_xor(a,key)    
+#获取加密图像的信息
+encryption=cv2.bitwise_and(aXorKey,mask)    
+#将图像a内脸部设置为0，得到noface
+noface=cv2.bitwise_and(a,(1-mask)*255)
+#得到打码的a图像
+maskface=encryption+noface
+#=======将打码解码
+#将脸部打码的a与密钥key进行疑惑运算，得到脸部的原始信息
+extractOriginal=cv2.bitwise_xor(maskface,key)
+#将解码的脸部信息extractOriginal提取出来，得到extractFace
+extractFace=cv2.bitwise_and(extractOriginal,mask*255)
+#从脸部打码的a内提取没有脸部信息的a图像
+noface2=cv2.bitwise_and(maskface,(1-mask)*255)
+#得到解码的啊图像
+extracta=noface2+extractFace
+#==========显示图像
+cv2.imshow("a",a)
+cv2.imshow("mask",mask*255)
+cv2.imshow("1-mask",(1-mask)*255)
+cv2.imshow("aXorKey",aXorKey)
+cv2.imshow("encryption",encryption)
+cv2.imshow("noface",noface)
+cv2.imshow("maskface",maskface)
+cv2.imshow("extractOriginal",extractOriginal)
+cv2.imshow("extaractFace",extractFace)
+cv2.imshow("extracta",extracta)
+cv2.waitKey()
+cv2.destroyAllWindows()
