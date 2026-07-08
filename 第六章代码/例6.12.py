@@ -1,0 +1,17 @@
+import cv2
+import numpy as np
+
+img = np.zeros((5, 5), dtype=np.uint8)
+img[0:5, 0:5] = 123
+img[2:5, 2:5] = 126
+
+print("img=\n", img)
+
+t1, thd = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
+print("t1=", t1)
+print("thd=\n", thd)
+
+t2, otsu = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+print("t2=", t2)
+print("otsu=\n", otsu)
+
